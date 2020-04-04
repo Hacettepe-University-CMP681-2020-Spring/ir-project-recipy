@@ -1,4 +1,4 @@
 python manage.py makemigrations
 python manage.py migrate
 
-web: gunicorn myproject.wsgi
+web: gunicorn recipy.wsgi
