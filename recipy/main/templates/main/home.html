@@ -1,0 +1,7 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <center>{{ user.username }}</center>
+    {% endif %}
+{% endblock body %}
