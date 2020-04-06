@@ -15,6 +15,14 @@
         body {
             background-color: antiquewhite;
         }
+        h2 {
+            padding-top: 15px;
+            padding-bottom: 30px;
+        }
+        .brand-text {
+            font-family: 'Great Vibes';
+            font-weight: bold;
+        }
         .navbar {
             background-color: orangered;
         }
@@ -25,23 +33,50 @@
             color: antiquewhite;
             text-shadow: 2px 2px 2px black;
         }
-        .navbar-brand.navbar-brand-custom:hover {
-            color: white;
+        .navbar-brand.navbar-brand-custom:hover{
+            color: antiquewhite;
+        }
+        .white-button {
+            border: 3px solid antiquewhite;
+            color: antiquewhite;
+            box-shadow: 2px 2px 2px black;
+        }
+        .white-button:hover {
+            color: antiquewhite;
+            box-shadow: none;
+        }
+        .form-submit-button {
+            width: 100%;
         }
     </style>
 </head>
 <body>
     {% block header %}
-        <nav class="navbar navbar-light" style="align-items: center;">
-          <a class="navbar-brand navbar-brand-custom" href="{% url 'home-page' %}">
-              <i class="fas fa-cookie-bite fa-lg"></i>
-              <span>Recipy</span>
-          </a>
+        <nav class="navbar navbar-light">
+            <a class="navbar-brand navbar-brand-custom" href="{% url 'home' %}">
+                <i class="fas fa-cookie-bite fa-lg"></i>
+                <span>Recipy</span>
+            </a>
+
+            {% if user.is_authenticated %}
+                <a class="btn btn-sm btn-default white-button" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item" style="padding-right: 10px;">
+                        <a class="btn btn-sm btn-default white-button" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-sm btn-default white-button" href="{% url 'register' %}">Register</a>
+                    </li>
+                </ul>
+            {% endif %}
         </nav>
     {% endblock header %}
 
-    {% block body %}
-    {% endblock body %}
+    <div class="container">
+        {% block body %}
+        {% endblock body %}
+    </div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

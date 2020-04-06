@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +127,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
 
 JET_THEMES = [
     {
@@ -163,6 +166,8 @@ JET_THEMES = [
 # JET_DEFAULT_THEME = 'light-gray'
 JET_SIDE_MENU_COMPACT = True
 # JET_CHANGE_FORM_SIBLING_LINKS = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 #
 #

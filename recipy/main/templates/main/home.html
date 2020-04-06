@@ -1,7 +1,9 @@
 {% extends 'main/base.html' %}
 
 {% block body %}
-    {% if user.is_authenticated %}
-        <center>{{ user.username }}</center>
+    {% if not user.is_authenticated %}
+        <div class="alert alert-danger" role="alert" style="margin-top: 15px;">
+          Please <a href="{% url 'login' %}"><u><strong>Login</strong></u></a> or <a href="{% url 'register' %}"><u><strong>Register</strong></u></a> to use the amazing features of the <span class="brand-text">Recipy</span>
+        </div>
     {% endif %}
 {% endblock body %}
