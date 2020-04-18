@@ -2,8 +2,27 @@
 
 {% block body %}
     {% if not user.is_authenticated %}
-        <div class="alert alert-danger" role="alert" style="margin-top: 15px;">
+        <div class="alert alert-danger col-lg-12" role="alert" style="margin-top: 15px;">
           Please <a href="{% url 'login' %}"><u><strong>Login</strong></u></a> or <a href="{% url 'register' %}"><u><strong>Register</strong></u></a> to use the amazing features of the <span class="brand-text">Recipy</span>
         </div>
     {% endif %}
+
+    <div class="row">
+        {% for recipe in recipes %}
+            <div class="col-sm-6 col-md-4 col-lg-4 mt-4">
+                <div class="card h-100">
+                    <img class="card-img-top" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <a href="{{ recipe.get_absolute_url }}" class="stretched-link w-100"><hr></a>
+                        <p class="card-text text-justify">{{ recipe.description|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted" style="float: left;">{{ recipe.type_of_dish|default:'-'|capfirst }}</small>
+                        <small class="text-muted" style="float: right;">({{ recipe.total_time|default:'-'|capfirst }})</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock body %}

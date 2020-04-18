@@ -1,0 +1,98 @@
+{% extends 'main/base.html' %}
+
+{% load recipy_extras %}
+
+{% block body %}
+    {% if not user.is_authenticated %}
+        <div class="alert alert-danger col-lg-12" role="alert" style="margin-top: 15px;">
+            Please <a href="{% url 'login' %}"><u><strong>Login</strong></u></a> or <a href="{% url 'register' %}"><u><strong>Register</strong></u></a> to use the amazing features of the
+            <span class="brand-text">Recipy</span>
+        </div>
+    {% endif %}
+
+    <!-- Portfolio Item Heading -->
+    <h2 style="padding: 30px 0 15px 0;">{{ recipe.title }}</h2>
+
+    <div class="row">
+        <div class="col-md-8">
+            <img class="img-fluid w-100" style="display: block;" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
+        </div>
+        <div class="col-md-4">
+            <p class="text-justify" style="padding-top: 15px">{{ recipe.description }}</p>
+            <hr>
+            <p>
+                <span class="font-weight-bold">Type:</span>
+                <span style="float: right;">{{ recipe.type_of_dish|default:'-'|capfirst }}</span>
+            </p>
+            <hr>
+            <p>
+                <span class="font-weight-bold">Occasion:</span>
+                <span style="float: right;">{{ recipe.occasion|default:'-'|capfirst }}</span>
+            </p>
+            <hr>
+            <p>
+                <span class="font-weight-bold">Total Time:</span>
+                <span style="float: right;">{{ recipe.total_time|default:'-'|capfirst }}</span>
+            </p>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row" style="padding-top: 15px;">
+        <div class="col-md-12">
+            <h3 class="my-3">Ingredients</h3>
+            <ul>
+                {% for ingredient in recipe.ingredients %}
+                    <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+            <hr>
+            <h3 class="my-3">Instructions</h3>
+            <ul>
+                {% for instruction in recipe.instructions %}
+                    {% if instruction|endswith:':' and forloop.counter == 1 %}
+                        <li class="font-weight-bold" style="list-style-type: none;">{{ instruction }}</li>
+                    {% elif instruction|endswith:':' %}
+                        <li class="font-weight-bold" style="list-style-type: none; padding-top: 15px;">{{ instruction }}</li>
+                    {% else %}
+                        <li>{{ instruction }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Related Projects Row -->
+    <h3 class="my-4">Related Recipes</h3>
+
+    <div class="row">
+        <div class="col-md-3 col-sm-6 mb-4">
+            <a href="#">
+                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-4">
+            <a href="#">
+                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-4">
+            <a href="#">
+                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+        <div class="col-md-3 col-sm-6 mb-4">
+            <a href="#">
+                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+            </a>
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+{% endblock body %}

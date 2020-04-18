@@ -1,12 +1,17 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 
 from main.forms import RegistrationForm
+from main.models import Recipe
 
 
 class HomePageView(TemplateView):
     template_name = 'main/home.html'
+
+    def get(self, request, *args, **kwargs):
+        kwargs['recipes'] = Recipe.objects.order_by('id')
+        return super().get(request, *args, **kwargs)
 
 
 class LoginView(TemplateView):
@@ -36,3 +41,11 @@ class RegisterView(TemplateView):
             return redirect('home')
         else:
             return render_to_response(self.template_name, {'form': form})
+
+
+class RecipeDetailView(DetailView):
+    model = Recipe
+    template_name = 'main/recipe_detail.html'
+
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
