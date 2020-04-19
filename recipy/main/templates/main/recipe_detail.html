@@ -11,14 +11,18 @@
     {% endif %}
 
     <!-- Portfolio Item Heading -->
-    <h2 style="padding: 30px 0 15px 0;">{{ recipe.title }}</h2>
+    <div class="row justify-content-md-center">
+        <div class="col col-md-auto" style="text-align: center;">
+            <h2>{{ recipe.title }}</h2>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-md-8">
             <img class="img-fluid w-100" style="display: block;" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
         </div>
         <div class="col-md-4">
-            <p class="text-justify" style="padding-top: 15px">{{ recipe.description }}</p>
+            <p class="text-justify" style="padding-top: 15px;">{{ recipe.description|read_more }}</p>
             <hr>
             <p>
                 <span class="font-weight-bold">Type:</span>
@@ -38,61 +42,52 @@
         </div>
     </div>
 
-    <div class="row" style="padding-top: 15px;">
+    <div class="row">
         <div class="col-md-12">
-            <h3 class="my-3">Ingredients</h3>
+            <h3>Ingredients</h3>
             <ul>
                 {% for ingredient in recipe.ingredients %}
                     <li>{{ ingredient }}</li>
                 {% endfor %}
             </ul>
-            <hr>
-            <h3 class="my-3">Instructions</h3>
+
+            <h3>Instructions</h3>
             <ul>
                 {% for instruction in recipe.instructions %}
-                    {% if instruction|endswith:':' and forloop.counter == 1 %}
-                        <li class="font-weight-bold" style="list-style-type: none;">{{ instruction }}</li>
-                    {% elif instruction|endswith:':' %}
-                        <li class="font-weight-bold" style="list-style-type: none; padding-top: 15px;">{{ instruction }}</li>
+                    {% if instruction|endswith:':' %}
+                        <li class="font-weight-bold" style="list-style-type: none; margin-top: 15px;">{{ instruction }}</li>
                     {% else %}
-                        <li>{{ instruction }}</li>
+                        <li class="text-justify">{{ instruction }}</li>
                     {% endif %}
                 {% endfor %}
             </ul>
         </div>
     </div>
 
-    <hr>
-
     <!-- Related Projects Row -->
-    <h3 class="my-4">Related Recipes</h3>
+    <h3>Related Recipes</h3>
 
-    <div class="row">
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="#">
-                <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-            </a>
-        </div>
-
+    <div class="row" style="margin-top: 30px;">
+        {% for recipe in related_recipes %}
+            <div class="col-md-3 col-sm-6 mb-4">
+                <a href="{{ recipe.get_absolute_url }}">
+                    <img class="img-fluid" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
+                    <div class="carousel-caption">
+                        <h6>{{ recipe.title }}</h6>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
     </div>
-    <!-- /.row -->
-
 {% endblock body %}
+
+{% block extra_script %}
+    <script>
+        $(".read-more-button").click(function (e) {
+            e.preventDefault();
+            let readMoreLink = $(this);
+            readMoreLink.parent().find('.more-text').show();
+            readMoreLink.parent().find('.to-be-hide').hide();
+        });
+    </script>
+{% endblock %}
