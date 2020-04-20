@@ -7,26 +7,27 @@
           Please <a href="{% url 'login' %}"><u><strong>Login</strong></u></a> or <a href="{% url 'register' %}"><u><strong>Register</strong></u></a> to use the amazing features of the <span class="brand-text">Recipy</span>
         </div>
 
-        <form class="row justify-content-center" style="margin-top: 30px; margin-bottom: 15px;">
-            <div class="form-group col-md-4">
-                <input type="text" class="form-control blue-input">
+        <form class="row justify-content-center" style="margin-top: 45px; margin-bottom: 15px;">
+            <div class="form-group col-md-10">
+                <input type="text" class="form-control blue-input" placeholder="Enter text to search for.">
             </div>
             <div class="col-md-2">
                 <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>
             </div>
         </form>
     {% else %}
-        <form class="row justify-content-center" style="margin-top: 30px; margin-bottom: 15px;">
-            <div class="form-group col-md-4 has-feedback">
-                <input type="text" class="form-control green-input">
-                <span class="form-control-feedback"><i class="far fa-check-circle green-icon"></i></span>
+        <form class="row justify-content-center" style="margin-top: 45px; margin-bottom: 15px;">
+            <div class="input-group mb-3 col-md-5 has-feedback">
+                <input type="text" class="form-control green-input" placeholder="Enter a keyword to strictly include.">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary green-keyword-button" type="button">Add</button>
+                </div>
             </div>
-            <div class="form-group col-md-4">
-                <input type="text" class="form-control blue-input">
-            </div>
-            <div class="form-group col-md-4 has-feedback">
-                <input type="text" class="form-control red-input" data-role="tagsinput">
-                <span class="form-control-feedback"><i class="far fa-times-circle red-icon"></i></span>
+            <div class="input-group mb-3 col-md-5 has-feedback">
+                <input type="text" class="form-control red-input" placeholder="Enter a keyword to strictly exclude.">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary red-keyword-button" type="button">Add</button>
+                </div>
             </div>
             <div class="col-md-2">
                 <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>

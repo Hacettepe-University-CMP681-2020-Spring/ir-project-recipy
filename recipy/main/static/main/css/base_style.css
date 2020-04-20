@@ -65,11 +65,42 @@ h3 {
     pointer-events: none;
 }
 
+.green-keyword-button, .green-keyword-button:hover, .green-keyword-button:active, .green-keyword-button:focus {
+    border: none !important;
+    color: white !important;
+    background-color: rgb(46, 184, 46) !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(46, 184, 46, 0.6)!important;
+}
+
+.green-keyword-button:hover {
+    border: none !important;
+    color: white !important;
+    background-color: rgba(46, 184, 46, 0.7) !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(46, 184, 46, 0.6)!important;
+}
+
+.red-keyword-button, .red-keyword-button:hover, .red-keyword-button:active, .red-keyword-button:focus {
+    border: none !important;
+    color: white !important;
+    background-color: rgb(217, 83, 79) !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(217, 83, 79, 0.6) !important;
+}
+
+.red-keyword-button:hover {
+    border: none !important;
+    color: white !important;
+    background-color: rgba(217, 83, 79, 0.7) !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(217, 83, 79, 0.6) !important;
+}
+
 .green-input, .green-input:focus {
     border: 2px solid rgba(46, 184, 46, 0.8);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(46, 184, 46, 0.6);
     outline: 0 none;
-    padding-right: 2.3rem;
+}
+
+.green-input::placeholder {
+    color: rgb(46, 184, 46);
 }
 
 .blue-input, .blue-input:focus {
@@ -77,12 +108,17 @@ h3 {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(91, 192, 222, 0.6);
     outline: 0 none;
 }
+.blue-input::placeholder {
+    color: rgb(91, 192, 222);
+}
 
 .red-input, .red-input:focus {
     border: 2px solid rgba(217, 83, 79, 0.8);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(217, 83, 79, 0.6);
     outline: 0 none;
-    padding-right: 2.3rem;
+}
+.red-input::placeholder {
+    color: rgb(217, 83, 79);
 }
 
 .green-icon {
