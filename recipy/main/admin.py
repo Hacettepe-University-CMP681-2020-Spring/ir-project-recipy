@@ -9,6 +9,6 @@ class RecipeAdmin(admin.ModelAdmin, DynamicArrayMixin):
     list_display = (
         'title',
         'type_of_dish',
-        'occasion',
+        'course',
         'total_time',
     )

@@ -22,7 +22,7 @@
             <img class="img-fluid w-100" style="display: block;" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
         </div>
         <div class="col-md-4">
-            <p class="text-justify" style="padding-top: 15px;">{{ recipe.description|read_more }}</p>
+            <p class="text-justify" style="padding-top: 15px;">{{ recipe.description|read_more:'70' }}</p>
             <hr>
             <p>
                 <span class="font-weight-bold">Type:</span>
@@ -30,8 +30,13 @@
             </p>
             <hr>
             <p>
-                <span class="font-weight-bold">Occasion:</span>
-                <span style="float: right;">{{ recipe.occasion|default:'-'|capfirst }}</span>
+                <span class="font-weight-bold">Course:</span>
+                <span style="float: right;">{{ recipe.course|default:'-'|capfirst }}</span>
+            </p>
+            <hr>
+            <p>
+                <span class="font-weight-bold">Difficulty:</span>
+                <span style="float: right;">{{ recipe.difficulty|default:'-'|capfirst }}</span>
             </p>
             <hr>
             <p>

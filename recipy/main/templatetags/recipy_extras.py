@@ -16,10 +16,12 @@ def endswith(text, ends):
 @stringfilter
 def read_more(text, word_count=100, autoescape=True):
     words = text.split()
+    word_count = int(word_count)
 
     if len(words) > word_count:
         return mark_safe("""
             <span>{initial_text}</span><span class="to-be-hide">...</span>
+            <br class="to-be-hide">
             <btn class="btn btn-sm btn-default read-more-button to-be-hide">
                 Show more <i class="fas fa-xs fa-chevron-down"></i>
             </btn>

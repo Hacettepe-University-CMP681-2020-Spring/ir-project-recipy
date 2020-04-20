@@ -7,12 +7,13 @@ from django.db import models
 class Recipe(models.Model):
     slug = models.SlugField(max_length=250, unique=True, editable=False)
     title = models.CharField(max_length=250, verbose_name='Title', db_index=True)
+    course = models.CharField(max_length=50, verbose_name='Course', null=True, blank=True)
     type_of_dish = models.CharField(max_length=100, verbose_name='Type of Dish', null=True, blank=True)
-    photo_url = models.URLField(max_length=500, verbose_name='Photo URL')
-    occasion = models.CharField(max_length=250, verbose_name='Occasion', null=True, blank=True)
+    difficulty = models.CharField(max_length=50, verbose_name='Difficulty', null=True, blank=True)
     ingredients = ArrayField(models.CharField(max_length=150), verbose_name='Ingredients')
     description = models.TextField(verbose_name='Description')
     instructions = ArrayField(models.TextField(), verbose_name='Instructions')
+    photo_url = models.URLField(max_length=500, verbose_name='Photo URL')
     total_time = models.CharField(max_length=100, verbose_name='Total Time', null=True, blank=True)
 
     def __str__(self):
