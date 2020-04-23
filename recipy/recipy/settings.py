@@ -176,8 +176,11 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #
 #
 # Application specific variables
-# nltk.download('stopwords')
-STOP_WORDS = set(stopwords.words('english'))
+try:
+    STOP_WORDS = set(stopwords.words('english'))
+except LookupError:
+    nltk.download('stopwords')
+    STOP_WORDS = set(stopwords.words('english'))
 
 #
 #
