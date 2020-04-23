@@ -176,7 +176,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #
 #
 # Application specific variables
-nltk.download('stopwords')
+# nltk.download('stopwords')
 STOP_WORDS = set(stopwords.words('english'))
 
 #

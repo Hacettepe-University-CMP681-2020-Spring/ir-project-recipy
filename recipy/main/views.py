@@ -19,6 +19,24 @@ class HomePageView(ListView):
     context_object_name = 'recipes'
     template_name = 'main/home.html'
 
+    def get(self, request, *args, **kwargs):
+        if 'page' not in request.GET and 'search' in request.GET:
+            self.template_name = 'main/recipe_list.html'
+
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context.update({'search': self.request.GET.get('search', None)})
+
+        return context
+
+    def get_queryset(self):
+        if self.request.GET.get('search'):
+            return super().get_queryset().filter(title__icontains=self.request.GET['search']).order_by(*self.ordering)
+        else:
+            return super().get_queryset()
+
 
 class LoginView(TemplateView):
     template_name = 'main/login.html'

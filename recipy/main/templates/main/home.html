@@ -7,24 +7,24 @@
           Please <a href="{% url 'login' %}"><u><strong>Login</strong></u></a> or <a href="{% url 'register' %}"><u><strong>Register</strong></u></a> to use the amazing features of the <span class="brand-text">Recipy</span>
         </div>
 
-        <form class="row justify-content-center" style="margin-top: 45px; margin-bottom: 15px;">
+        <form id="recipe-search-form" class="row justify-content-center" style="margin-top: 45px;">
             <div class="form-group col-md-10">
-                <input type="text" class="form-control blue-input" placeholder="Enter text to search for.">
+                <input type="text" class="form-control blue-input" name="search" placeholder="Enter text to search for.">
             </div>
             <div class="col-md-2">
                 <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>
             </div>
         </form>
     {% else %}
-        <form class="row justify-content-center" style="margin-top: 45px; margin-bottom: 15px;">
+        <form id="recipe-search-form" class="row justify-content-center" style="margin-top: 45px;">
             <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
-                <input type="text" class="form-control green-input" placeholder="Enter a keyword to strictly include.">
+                <input type="text" class="form-control green-input" name="include" placeholder="Enter a keyword to strictly include.">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary green-keyword-button" type="button">Add</button>
                 </div>
             </div>
             <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
-                <input type="text" class="form-control red-input" placeholder="Enter a keyword to strictly exclude.">
+                <input type="text" class="form-control red-input" name="exclude" placeholder="Enter a keyword to strictly exclude.">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary red-keyword-button" type="button">Add</button>
                 </div>
@@ -35,45 +35,21 @@
         </form>
     {% endif %}
 
-    <div class="row infinite-container">
-        {% for recipe in recipes %}
-            <div class="col-sm-6 col-md-6 col-lg-4 mt-4 infinite-item">
-                <div class="card h-100">
-                    <img class="card-img-top" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ recipe.title }}</h5>
-                        <a href="{{ recipe.get_absolute_url }}" class="stretched-link w-100"><hr></a>
-                        <p class="card-text text-justify">{{ recipe.description|truncatewords:20 }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted" style="float: left;">{{ recipe.course|default:'-'|capfirst }}</small>
-                        <small class="text-muted" style="float: right;">{{ recipe.difficulty|default:'-'|capfirst }} / {{ recipe.total_time|default:'-'|capfirst }}</small>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-    {% if page_obj.has_next %}
-        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
-    {% endif %}
-
-    <div class="d-flex justify-content-center" style="display:none; margin-top: 15px;">
-        <div class="spinner-border text-info" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
+    <!-- Include results -->
+    <div id="recipe-list-container">
+        {% include 'main/recipe_list.html' %}
     </div>
 {% endblock body %}
 
-{% block extra_script %}
-    <script src="{% static 'bower_components/waypoints/lib/jquery.waypoints.js' %}"></script>
-    <script src="{% static 'bower_components/waypoints/lib/shortcuts/infinite.js' %}"></script>
+{% block extra_script_1 %}
     <script>
-        $(document).ready(function () {
-            var infinite = new Waypoint.Infinite({
+        function loadWaypoints() {
+            Waypoint.destroyAll();
+
+            let infinite_element = new Waypoint.Infinite({
                 element: $('.infinite-container')[0],
                 handler: function (direction) {
-
+                    this.destroy();
                 },
                 offset: 'bottom-in-view',
 
@@ -84,6 +60,27 @@
                     $('.spinner-border').hide();
                 }
             });
+        }
+
+        $(document).ready(function () {
+            loadWaypoints();
+
+            $('#recipe-search-form').submit(function (event) {
+                event.preventDefault();
+
+                $('#recipe-list-container').slideUp(700); // Hide the recipes slowly
+                let submittedForm = $(this);
+                $.ajax({
+                    url: "{% url 'home' %}",
+                    method: 'GET',
+                    data: submittedForm.serialize(),
+                    success: function (response) {
+                        $('#recipe-list-container').html(response);
+                        $('#recipe-list-container').slideDown(700); // Display the recipes slowly
+                        loadWaypoints();
+                    }
+                });
+            });
         });
     </script>
-{% endblock %}
+{% endblock extra_script_1 %}
