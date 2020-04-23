@@ -3,7 +3,6 @@ import random
 from functools import reduce
 
 from django.contrib.auth import authenticate, login
-from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect, render_to_response
 from django.views.generic import TemplateView, DetailView, ListView
@@ -15,7 +14,7 @@ from recipy.settings import STOP_WORDS
 
 class HomePageView(ListView):
     model = Recipe
-    paginate_by = 15
+    paginate_by = 12
     ordering = ['id']
     context_object_name = 'recipes'
     template_name = 'main/home.html'

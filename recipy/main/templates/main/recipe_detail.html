@@ -18,10 +18,10 @@
     </div>
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12 col-lg-8">
             <img class="img-fluid w-100" style="display: block;" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-12 col-lg-4">
             <p class="text-justify" style="padding-top: 15px;">{{ recipe.description|read_more:'70' }}</p>
             <hr>
             <p>
@@ -74,7 +74,7 @@
 
     <div class="row" style="margin-top: 30px;">
         {% for recipe in related_recipes %}
-            <div class="col-md-3 col-sm-6 mb-4">
+            <div class="col-sm-12 col-md-6 col-lg-3 mb-4">
                 <a href="{{ recipe.get_absolute_url }}">
                     <img class="img-fluid" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
                     <div class="carousel-caption">

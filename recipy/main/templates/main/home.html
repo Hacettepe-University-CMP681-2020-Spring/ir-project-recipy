@@ -17,19 +17,19 @@
         </form>
     {% else %}
         <form class="row justify-content-center" style="margin-top: 45px; margin-bottom: 15px;">
-            <div class="input-group mb-3 col-md-5 has-feedback">
+            <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
                 <input type="text" class="form-control green-input" placeholder="Enter a keyword to strictly include.">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary green-keyword-button" type="button">Add</button>
                 </div>
             </div>
-            <div class="input-group mb-3 col-md-5 has-feedback">
+            <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
                 <input type="text" class="form-control red-input" placeholder="Enter a keyword to strictly exclude.">
                 <div class="input-group-append">
                     <button class="btn btn-outline-secondary red-keyword-button" type="button">Add</button>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4 col-lg-2">
                 <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>
             </div>
         </form>
@@ -37,7 +37,7 @@
 
     <div class="row infinite-container">
         {% for recipe in recipes %}
-            <div class="col-sm-6 col-md-4 col-lg-4 mt-4 infinite-item">
+            <div class="col-sm-6 col-md-6 col-lg-4 mt-4 infinite-item">
                 <div class="card h-100">
                     <img class="card-img-top" src="{{ recipe.photo_url }}" alt="{{ recipe.title }}">
                     <div class="card-body">
