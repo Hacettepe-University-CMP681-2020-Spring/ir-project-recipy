@@ -68,17 +68,18 @@
             $('#recipe-search-form').submit(function (event) {
                 event.preventDefault();
 
-                $('#recipe-list-container').slideUp(700); // Hide the recipes slowly
                 let submittedForm = $(this);
-                $.ajax({
-                    url: "{% url 'home' %}",
-                    method: 'GET',
-                    data: submittedForm.serialize(),
-                    success: function (response) {
-                        $('#recipe-list-container').html(response);
-                        $('#recipe-list-container').slideDown(700); // Display the recipes slowly
-                        loadWaypoints();
-                    }
+                $('#recipe-list-container').slideUp(function () { // Hide the recipes slowly
+                    $.ajax({
+                        url: "{% url 'home' %}",
+                        method: 'GET',
+                        data: submittedForm.serialize(),
+                        success: function (response) {
+                            $('#recipe-list-container').html(response);
+                            $('#recipe-list-container').slideDown('slow'); // Display the recipes slowly
+                            loadWaypoints();
+                        }
+                    });
                 });
             });
         });
