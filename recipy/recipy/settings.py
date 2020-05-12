@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import string
+
 import django_heroku
 
 import nltk
@@ -177,10 +179,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #
 # Application specific variables
 try:
+    LEMMATIZER = nltk.WordNetLemmatizer()
     STOP_WORDS = set(stopwords.words('english'))
 except LookupError:
+    nltk.download('wordnet')
     nltk.download('stopwords')
+    LEMMATIZER = nltk.WordNetLemmatizer()
     STOP_WORDS = set(stopwords.words('english'))
+
+CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
 
 #
 #
