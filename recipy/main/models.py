@@ -6,7 +6,7 @@ from django.utils.text import slugify
 from django_better_admin_arrayfield.models.fields import ArrayField
 from django.db import models
 
-from recipy.settings import LEMMATIZER, STOP_WORDS, CLEANED_STOP_WORDS
+from main.utils import clean_text_and_tokenize
 
 
 class Recipe(models.Model):
@@ -33,16 +33,6 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title) if not self.slug else self.slug
 
-        # Build the whole string and remove digits from it
-        whole_string = re.sub(r'\d+', '', ' '.join(self.instructions).lower())
-
-        # Remove punctuations from the string
-        cleaned_string = whole_string.translate(str.maketrans('', '', string.punctuation))
-
-        # Tokenize and remove the stop-words from the instructions
-        tokens = set(w for w in re.split(r'[-\s\n]', cleaned_string) if w) - CLEANED_STOP_WORDS
-
-        # Lemmatize the string and save the results to the DB
-        self.words = sorted(set(LEMMATIZER.lemmatize(token) for token in tokens))
+        self.words = clean_text_and_tokenize(self.instructions)
 
         return super().save(*args, **kwargs)

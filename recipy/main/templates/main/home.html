@@ -16,23 +16,48 @@
             </div>
         </form>
     {% else %}
-        <form id="recipe-search-form" class="row justify-content-center" style="margin-top: 45px;">
-            <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
-                <input type="text" class="form-control green-input" name="include" placeholder="Enter a keyword to strictly include.">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary green-keyword-button" type="button">Add</button>
-                </div>
+        <!-- Search type select menu -->
+        <ul class="nav nav-tabs justify-content-center" role="tablist" style="margin: 45px 0 0 0;">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#extended-search">Extended Search</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#simple-search">Simple Search</a>
+            </li>
+        </ul>
+
+        <!-- Search type contents -->
+        <div class="tab-content">
+            <div id="extended-search" class="container tab-pane active"><br>
+                <form id="recipe-search-form" class="row justify-content-center">
+                    <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
+                        <input type="text" class="form-control green-input" name="include" placeholder="Enter a keyword to strictly include.">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary green-keyword-button" type="button">Add</button>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
+                        <input type="text" class="form-control red-input" name="exclude" placeholder="Enter a keyword to strictly exclude.">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary red-keyword-button" type="button">Add</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-lg-2">
+                        <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>
+                    </div>
+                </form>
             </div>
-            <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
-                <input type="text" class="form-control red-input" name="exclude" placeholder="Enter a keyword to strictly exclude.">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary red-keyword-button" type="button">Add</button>
-                </div>
+            <div id="simple-search" class="container tab-pane fade"><br>
+                <form id="recipe-search-form" class="row justify-content-center">
+                    <div class="form-group col-md-10">
+                        <input type="text" class="form-control blue-input" name="search" placeholder="Enter text to search for.">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>
+                    </div>
+                </form>
             </div>
-            <div class="col-md-4 col-lg-2">
-                <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>
-            </div>
-        </form>
+        </div>
     {% endif %}
 
     <!-- Include results -->
@@ -65,7 +90,7 @@
         $(document).ready(function () {
             loadWaypoints();
 
-            $('#recipe-search-form').submit(function (event) {
+            $(document).on('submit', '#recipe-search-form', function (event) {
                 event.preventDefault();
 
                 let submittedForm = $(this);

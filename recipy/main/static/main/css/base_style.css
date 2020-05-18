@@ -55,6 +55,36 @@ h3 {
     box-shadow: none;
 }
 
+.tab-pane {
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    margin-left: 3px;
+    font-weight: bold;
+    color: gray !important;
+    border-bottom: none !important;
+    border-top: 1px solid orangered !important;
+    border-left: 1px solid orangered !important;
+    border-right: 1px solid orangered !important;
+}
+
+.nav-link:hover {
+    color: black;
+    font-weight: bold;
+}
+
+.nav-link.active {
+    color: black !important;
+    background-color: antiquewhite !important;
+    border-bottom: none !important;
+    border-top: 3px solid orangered !important;
+    border-left: 3px solid orangered !important;
+    border-right: 3px solid orangered !important;
+    box-shadow: 2px -2px 2px black;
+}
+
 .form-control-feedback {
     position: absolute;
     top: .45rem;
