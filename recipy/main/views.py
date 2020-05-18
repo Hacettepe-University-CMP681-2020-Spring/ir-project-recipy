@@ -67,6 +67,8 @@ class HomePageView(ListView):
             include_set = clean_text_and_tokenize(self.request.GET.get('include'))
             exclude_set = clean_text_and_tokenize(self.request.GET.get('exclude'))
 
+            print(include_set)
+
             # TODO: Preprocess the query-terms
 
             # Combine include query-terms with AND operator (intersect the documents)
