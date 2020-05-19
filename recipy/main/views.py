@@ -1,6 +1,6 @@
 import operator
 import random
-from collections import defaultdict
+from collections import defaultdict, Counter
 from functools import reduce
 
 from django.contrib.auth import authenticate, login
@@ -15,19 +15,46 @@ from recipy.settings import STOP_WORDS
 
 
 #
+ALL_DOCUMENTS = set()
+
+#
 INDEX = defaultdict(set)
 
+#
+STATISTICAL_THESAURUS = defaultdict(set)
 
-def reload_index():
+
+def build_index():
     """
     This function fetches recipes from database and indexes them to a global variable
     :return: None
     """
     global INDEX
+    global ALL_DOCUMENTS
 
     for recipe_pk, words in Recipe.objects.values_list('pk', 'words'):
         for word in words:
             INDEX[word].add(recipe_pk)
+
+        ALL_DOCUMENTS.add(recipe_pk)
+
+
+def build_statistical_thesaurus():
+    global STATISTICAL_THESAURUS
+
+    # Find most common words. (Eliminate words that occur in 30% of the documents)
+    common_words = set(word for word, docs in INDEX.items() if len(docs) > (len(ALL_DOCUMENTS) * 30/100))
+
+    # Build co-occurrences with considering term-document index
+    co_occurrence_dict = defaultdict(lambda: defaultdict(int))
+    for word1, docs1 in INDEX.items():
+        for word2, docs2 in INDEX.items():
+            if word1 != word2 and word2 not in common_words:
+                co_occurrence_dict[word1][word2] = len(docs1 & docs2)  # Intersect the document sets
+
+    # Build the statistical-thesaurus by taking most relevant 3 words.
+    for word1, count_dict in co_occurrence_dict.items():
+        STATISTICAL_THESAURUS[word1] = set(i[0] for i in Counter(count_dict).most_common(3))
 
 
 class HomePageView(ListView):
@@ -67,18 +94,26 @@ class HomePageView(ListView):
             include_set = clean_text_and_tokenize(self.request.GET.get('include'))
             exclude_set = clean_text_and_tokenize(self.request.GET.get('exclude'))
 
-            print(include_set)
+            # Expand include query
+            expanded_include_set = set()
+            for query_term in include_set:
+                expanded_include_set.add(query_term)
+                expanded_include_set.update(STATISTICAL_THESAURUS[query_term])
 
-            # TODO: Preprocess the query-terms
+            # Expand exclude query
+            expanded_exclude_set = set()
+            for query_term in exclude_set:
+                expanded_exclude_set.add(query_term)
+                expanded_exclude_set.update(STATISTICAL_THESAURUS[query_term])
 
             # Combine include query-terms with AND operator (intersect the documents)
-            include_docs = INDEX[include_set.pop()] if include_set else set()
-            for w in include_set:
+            include_docs = ALL_DOCUMENTS
+            for w in expanded_include_set:
                 include_docs = include_docs.intersection(INDEX[w])
 
             # Combine exclude query-terms with OR operator (union the documents)
             exclude_docs = set()
-            for w in exclude_set:
+            for w in expanded_exclude_set:
                 exclude_docs = exclude_docs.union(INDEX[w])
 
             # Filter the resultant recipes

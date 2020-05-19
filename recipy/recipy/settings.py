@@ -86,10 +86,10 @@ WSGI_APPLICATION = 'recipy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd3mol0j80vnefe',
-        'USER': 'mblklapjasbura',
-        'PASSWORD': '29ac6ad919db8a330dcaa794b7b7c1ffb6b5f8524809deba779c12dfd6ad8f69',
-        'HOST': 'ec2-54-75-231-215.eu-west-1.compute.amazonaws.com',
+        'NAME': 'df5v9ied8c2kkl',
+        'USER': 'ncqloktfuungbd',
+        'PASSWORD': 'e43cbb7212cb48b4da2ed45ff43096c9066ccdf514dbd53e4eb8f9ff6ddf1ef3',
+        'HOST': 'ec2-54-217-224-85.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
