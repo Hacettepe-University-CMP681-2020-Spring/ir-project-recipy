@@ -30,18 +30,29 @@
         <div class="tab-content">
             <div id="extended-search" class="container tab-pane active"><br>
                 <form id="recipe-search-form" class="row justify-content-center">
-                    <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
-                        <input type="text" class="form-control green-input" name="include" placeholder="Enter a keyword to strictly include.">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary green-keyword-button" type="button">Add</button>
+                    <div class=" mb-3 col-md-6 col-lg-5 ">
+                        <div class="input-group has-feedback">
+                            <input id="fake-include-input" type="text" class="form-control green-input" placeholder="Enter a keyword to strictly include.">
+                            <div class="input-group-append">
+                                <button id="add-include-button" class="btn btn-outline-secondary green-keyword-button" type="button">Add</button>
+                            </div>
                         </div>
+                        <small id="green-help-text" class="form-text text-muted"></small>
                     </div>
-                    <div class="input-group mb-3 col-md-6 col-lg-5 has-feedback">
-                        <input type="text" class="form-control red-input" name="exclude" placeholder="Enter a keyword to strictly exclude.">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary red-keyword-button" type="button">Add</button>
+                    <div class=" mb-3 col-md-6 col-lg-5 ">
+                        <div class="input-group has-feedback">
+                            <input id="fake-exclude-input" type="text" class="form-control red-input" placeholder="Enter a keyword to strictly exclude.">
+                            <div class="input-group-append">
+                                <button id="add-exclude-button" class="btn btn-outline-secondary red-keyword-button" type="button">Add</button>
+                            </div>
                         </div>
+                        <small id="red-help-text" class="form-text text-muted"></small>
                     </div>
+
+                    <!-- Actual input fields -->
+                    <input id="include-input" type="hidden" class="form-control"  name="include">
+                    <input id="exclude-input" type="hidden" class="form-control" name="exclude">
+
                     <div class="col-md-4 col-lg-2">
                         <button class="btn btn-info form-submit-button" style="width: 100%" type="submit">Search</button>
                     </div>
@@ -90,8 +101,69 @@
         $(document).ready(function () {
             loadWaypoints();
 
+            $(document).on('click', '#add-include-button', function (event) {
+                let helpText = $('#green-help-text');
+                let actualInput = $('#include-input');
+                let fakeInput = $('#fake-include-input');
+
+                helpText.append('<span><i class="fas fa-minus-circle token-remove-icon include-token-remove-icon"></i>' + fakeInput.val() + '<hr class="query-hr"></span>');
+                actualInput.val(actualInput.val() + '|' + fakeInput.val());
+                fakeInput.val('');
+            });
+
+            $(document).on('click', '#add-exclude-button', function (event) {
+                let helpText = $('#red-help-text');
+                let actualInput = $('#exclude-input');
+                let fakeInput = $('#fake-exclude-input');
+
+                helpText.append('<span><i class="fas fa-minus-circle token-remove-icon exclude-token-remove-icon"></i>' + fakeInput.val() + '<hr class="query-hr"></span>');
+                actualInput.val(actualInput.val() + '|' + fakeInput.val());
+                fakeInput.val('');
+            });
+
+            $(document).on('click', '.include-token-remove-icon', function (event) {
+                let self = $(this);
+                let actualInput = $('#include-input');
+
+                // Remove from the input and text box
+                actualInput.val(actualInput.val().replace('|' + self.closest('span').text(), ''));
+                $(self).closest('span').remove();
+            });
+
+            $(document).on('click', '.exclude-token-remove-icon', function (event) {
+                let self = $(this);
+                let actualInput = $('#exclude-input');
+
+                // Remove from the input and text box
+                actualInput.val(actualInput.val().replace('|' + self.closest('span').text(), ''));
+                $(self).closest('span').remove();
+            });
+
+            $(document).on('DOMSubtreeModified', '#green-help-text,#red-help-text', function (event) {
+                let spanElements = $(this).children('span');
+
+                spanElements.each(function (i) {
+                    let spanElement = $(this);
+
+                    if (i === spanElements.length - 1) {
+                        spanElement.children('hr').hide();
+                    }
+                    else {
+                        spanElement.children('hr').show();
+                    }
+                });
+            });
+
+            /* ***************************************** Search form submit ***************************************** */
             $(document).on('submit', '#recipe-search-form', function (event) {
                 event.preventDefault();
+
+                if ($('#fake-include-input').val() !== '') {
+                    $('#add-include-button').click();
+                }
+                if ($('#fake-exclude-input').val() !== '') {
+                    $('#add-exclude-button').click();
+                }
 
                 let submittedForm = $(this);
                 $('#recipe-list-container').slideUp(function () { // Hide the recipes slowly
@@ -107,6 +179,7 @@
                     });
                 });
             });
+            /* ****************************************************************************************************** */
         });
     </script>
 {% endblock extra_script_1 %}

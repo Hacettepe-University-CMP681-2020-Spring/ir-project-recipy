@@ -189,6 +189,10 @@ except LookupError:
 
 CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
 
+CLEANED_STOP_WORDS.update({
+    'using',
+})
+
 #
 #
 # Activate Django-Heroku.

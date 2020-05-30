@@ -161,6 +161,36 @@ h3 {
     color: rgb(217, 83, 79);
 }
 
+#green-help-text {
+    padding: 5px;
+    font-size: 15px !important;
+    color: black !important;
+    background-color: rgba(92, 184, 92, .5);
+}
+
+#red-help-text {
+    padding: 5px;
+    font-size: 15px !important;
+    color: black !important;
+    background-color: rgba(217, 83, 79, .5);
+}
+
+.token-remove-icon {
+    padding-right: 5px;
+    font-size: 1.2em;
+    color: #D00000;
+}
+
+.token-remove-icon:hover {
+    cursor: pointer;
+}
+
+.query-hr {
+    display: none;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
 .form-submit-button {
     width: 100%;
 }

@@ -95,10 +95,9 @@ class HomePageView(ListView):
             exclude_set = clean_text_and_tokenize(self.request.GET.get('exclude'))
 
             # Expand include query
-            expanded_include_set = set()
+            expansion_include_set = set()
             for query_term in include_set:
-                expanded_include_set.add(query_term)
-                expanded_include_set.update(STATISTICAL_THESAURUS[query_term])
+                expansion_include_set.update(STATISTICAL_THESAURUS[query_term])
 
             # Expand exclude query
             expanded_exclude_set = set()
@@ -106,12 +105,20 @@ class HomePageView(ListView):
                 expanded_exclude_set.add(query_term)
                 expanded_exclude_set.update(STATISTICAL_THESAURUS[query_term])
 
-            # Combine include query-terms with AND operator (intersect the documents)
-            include_docs = ALL_DOCUMENTS
-            for w in expanded_include_set:
-                include_docs = include_docs.intersection(INDEX[w])
+            # To prevent some terms gone missing
+            expanded_exclude_set = expanded_exclude_set.difference(include_set)
+            expansion_include_set = expansion_include_set.difference(exclude_set)
 
-            # Combine exclude query-terms with OR operator (union the documents)
+            # Combine include query-term results with AND operator (intersect the documents)
+            include_docs = ALL_DOCUMENTS
+            for w in include_set:
+                include_docs.intersection_update(INDEX[w])
+
+            # Combine expansion query-term results with OR operator (union the documents)
+            for w in expansion_include_set:
+                include_docs = include_docs.union(INDEX[w])
+
+            # Combine exclude query-term results with OR operator (union the documents)
             exclude_docs = set()
             for w in expanded_exclude_set:
                 exclude_docs = exclude_docs.union(INDEX[w])

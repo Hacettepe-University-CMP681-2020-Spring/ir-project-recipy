@@ -10,10 +10,10 @@ class MainConfig(AppConfig):
         from main.views import build_statistical_thesaurus
 
         # Reload the index on startup
-        print('Building term-documents index...')
+        print('Building the inverted index...')
         build_index()
         print('Done.\n')
 
-        print('Building statistical thesaurus index...')
+        print('Building statistical thesaurus and indexing it...')
         build_statistical_thesaurus()
         print('Done.\n')
