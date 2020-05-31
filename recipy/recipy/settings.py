@@ -196,9 +196,14 @@ except LookupError:
     nltk.download('wordnet')
     LEMMATIZER = nltk.WordNetLemmatizer()
 
-with open('../dataset/stopwords.txt', 'r') as f:
-    STOP_WORDS = set(f.read().split())
-    CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
+try:
+    with open('../dataset/stopwords.txt', 'r') as f:
+        STOP_WORDS = set(f.read().split())
+        CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
+except FileNotFoundError:
+    with open('../../dataset/stopwords.txt', 'r') as f:
+        STOP_WORDS = set(f.read().split())
+        CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
 
 #
 #
