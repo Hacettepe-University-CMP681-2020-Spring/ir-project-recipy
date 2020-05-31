@@ -23,6 +23,8 @@
 
 {% if page_obj.has_next and search is not None %}
     <a id="infinite-more-link" class="infinite-more-link" href="?search={{ search }}&page={{ page_obj.next_page_number }}"></a>
+{% elif page_obj.has_next and include is not None %}
+    <a id="infinite-more-link" class="infinite-more-link" href="?include={{ include }}&exclude={{ exclude }}&page={{ page_obj.next_page_number }}"></a>
 {% elif page_obj.has_next %}
     <a id="infinite-more-link" class="infinite-more-link" href="?page={{ page_obj.next_page_number }}"></a>
 {% endif %}

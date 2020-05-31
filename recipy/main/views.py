@@ -4,7 +4,7 @@ from collections import defaultdict, Counter
 from functools import reduce
 
 from django.contrib.auth import authenticate, login
-from django.db.models import Q
+from django.db.models import Q, When, Case
 from django.shortcuts import redirect, render_to_response
 from django.views.generic import TemplateView, DetailView, ListView
 
@@ -60,7 +60,7 @@ def build_statistical_thesaurus():
 class HomePageView(ListView):
     model = Recipe
     paginate_by = 12
-    ordering = ['id']
+    # ordering = ['id']
     context_object_name = 'recipes'
     template_name = 'main/home.html'
 
@@ -74,12 +74,13 @@ class HomePageView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context.update({'search': self.request.GET.get('search', None)})
+        context.update({'include': self.request.GET.get('include', None)})
+        context.update({'exclude': self.request.GET.get('exclude', None)})
 
         return context
 
     def get_queryset(self):
         if self.request.GET.get('search'):
-            # Clean text and tokenize.
             word_set = clean_text_and_tokenize(self.request.GET['search'])
 
             # Retrieve documents from index with using OR operator (union the documents)
@@ -115,19 +116,26 @@ class HomePageView(ListView):
                 include_docs.intersection_update(INDEX[w])
 
             # Combine expansion query-term results with OR operator (union the documents)
+            expansion_docs = set()
             for w in expansion_include_set:
-                include_docs = include_docs.union(INDEX[w])
+                expansion_docs = expansion_docs.union(INDEX[w])
 
             # Combine exclude query-term results with OR operator (union the documents)
             exclude_docs = set()
             for w in expanded_exclude_set:
                 exclude_docs = exclude_docs.union(INDEX[w])
 
+            ordered_include_docs = sorted(include_docs - exclude_docs, reverse=True) + sorted(expansion_docs - exclude_docs)
+
             # Filter the resultant recipes
-            return super().get_queryset().filter(pk__in=(include_docs - exclude_docs)).order_by(*self.ordering)
+            return super().get_queryset().filter(
+                pk__in=ordered_include_docs
+            ).order_by(
+                Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ordered_include_docs)])
+            )
 
         else:
-            return super().get_queryset()
+            return super().get_queryset().order_by('id')
 
 
 class LoginView(TemplateView):

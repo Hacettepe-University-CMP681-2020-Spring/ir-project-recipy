@@ -95,6 +95,18 @@ DATABASES = {
 }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'recipy_db',
+#         'USER': 'yilmaz',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
+
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -180,18 +192,13 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Application specific variables
 try:
     LEMMATIZER = nltk.WordNetLemmatizer()
-    STOP_WORDS = set(stopwords.words('english'))
 except LookupError:
     nltk.download('wordnet')
-    nltk.download('stopwords')
     LEMMATIZER = nltk.WordNetLemmatizer()
-    STOP_WORDS = set(stopwords.words('english'))
 
-CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
-
-CLEANED_STOP_WORDS.update({
-    'using',
-})
+with open('../dataset/stopwords.txt', 'r') as f:
+    STOP_WORDS = set(f.read().split())
+    CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
 
 #
 #
