@@ -39,11 +39,13 @@ def build_index():
 
 
 def build_statistical_thesaurus():
-    global INDEX, STATISTICAL_THESAURUS
+    global INDEX, ALL_DOCUMENTS, STATISTICAL_THESAURUS
 
+    print('TEST')
     # Find most common words. (Eliminate words that occur in 30% of the documents)
     common_words = set(word for word, docs in INDEX.items() if len(docs) > (len(ALL_DOCUMENTS) * 30/100))
 
+    print('ANOTHER_TEST')
     # Build co-occurrences with considering term-document index
     co_occurrence_dict = defaultdict(lambda: defaultdict(int))
     for word1, docs1 in INDEX.items():
@@ -51,6 +53,7 @@ def build_statistical_thesaurus():
             if word1 != word2 and word2 not in common_words:
                 co_occurrence_dict[word1][word2] = len(docs1 & docs2)  # Intersect the document sets
 
+    print('YET ANOTHER TEST')
     # Build the statistical-thesaurus by taking most relevant 3 words.
     for word1, count_dict in co_occurrence_dict.items():
         STATISTICAL_THESAURUS[word1] = set(i[0] for i in Counter(count_dict).most_common(3))
@@ -79,7 +82,7 @@ class HomePageView(ListView):
         return context
 
     def get_queryset(self):
-        global INDEX, STATISTICAL_THESAURUS
+        global INDEX, ALL_DOCUMENTS, STATISTICAL_THESAURUS
 
         if self.request.GET.get('search'):
             word_set = clean_text_and_tokenize(self.request.GET['search'])
