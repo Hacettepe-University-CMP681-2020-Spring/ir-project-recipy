@@ -179,18 +179,33 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Application specific variables
 LEMMATIZER = nltk.WordNetLemmatizer()
 
-with open('../dataset/stopwords.txt', 'r') as f:
-    STOP_WORDS = set(f.read().split())
-    CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
+try:
+    with open('../dataset/stopwords.txt', 'r') as f:
+        STOP_WORDS = set(f.read().split())
+        CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
 
-with open('../pickles/all_documents.txt', 'rb') as f:
-    ALL_DOCUMENTS = pickle.load(f)
+    with open('../pickles/all_documents.txt', 'rb') as f:
+        ALL_DOCUMENTS = pickle.load(f)
 
-with open('../pickles/index.txt', 'rb') as f:
-    INDEX = pickle.load(f)
+    with open('../pickles/index.txt', 'rb') as f:
+        INDEX = pickle.load(f)
 
-with open('../pickles/thesaurus.txt', 'rb') as f:
-    STATISTICAL_THESAURUS = pickle.load(f)
+    with open('../pickles/thesaurus.txt', 'rb') as f:
+        STATISTICAL_THESAURUS = pickle.load(f)
+
+except FileNotFoundError:
+    with open('dataset/stopwords.txt', 'r') as f:
+        STOP_WORDS = set(f.read().split())
+        CLEANED_STOP_WORDS = set(s.translate(str.maketrans('', '', string.punctuation)) for s in STOP_WORDS)
+
+    with open('pickles/all_documents.txt', 'rb') as f:
+        ALL_DOCUMENTS = pickle.load(f)
+
+    with open('pickles/index.txt', 'rb') as f:
+        INDEX = pickle.load(f)
+
+    with open('pickles/thesaurus.txt', 'rb') as f:
+        STATISTICAL_THESAURUS = pickle.load(f)
 
 #
 #
