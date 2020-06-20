@@ -29,8 +29,7 @@ def build_index():
     This function fetches recipes from database and indexes them to a global variable
     :return: None
     """
-    global INDEX
-    global ALL_DOCUMENTS
+    global INDEX, ALL_DOCUMENTS
 
     for recipe_pk, words in Recipe.objects.values_list('pk', 'words'):
         for word in words:
@@ -40,7 +39,7 @@ def build_index():
 
 
 def build_statistical_thesaurus():
-    global STATISTICAL_THESAURUS
+    global INDEX, STATISTICAL_THESAURUS
 
     # Find most common words. (Eliminate words that occur in 30% of the documents)
     common_words = set(word for word, docs in INDEX.items() if len(docs) > (len(ALL_DOCUMENTS) * 30/100))
@@ -80,6 +79,8 @@ class HomePageView(ListView):
         return context
 
     def get_queryset(self):
+        global INDEX, STATISTICAL_THESAURUS
+
         if self.request.GET.get('search'):
             word_set = clean_text_and_tokenize(self.request.GET['search'])
 
