@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django_better_admin_arrayfield.models.fields import ArrayField
 from django.db import models
 
-from main.utils import clean_text_and_tokenize
+from main.utilities.text_operations import clean_text_and_tokenize
 
 
 class Recipe(models.Model):
