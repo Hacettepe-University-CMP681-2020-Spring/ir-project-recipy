@@ -16,7 +16,9 @@ import string
 import django_heroku
 
 import nltk
-from nltk.corpus import stopwords
+
+# Import NLTK data
+nltk.data.path.append('../dataset/corpora/')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -93,19 +95,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'recipy_db',
-#         'USER': 'yilmaz',
-#         'PASSWORD': '',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-# }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -190,11 +179,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #
 #
 # Application specific variables
-try:
-    LEMMATIZER = nltk.WordNetLemmatizer()
-except LookupError:
-    nltk.download('wordnet')
-    LEMMATIZER = nltk.WordNetLemmatizer()
+LEMMATIZER = nltk.WordNetLemmatizer()
 
 try:
     with open('../dataset/stopwords.txt', 'r') as f:
