@@ -67,7 +67,7 @@ class HomePageView(ListView):
             expansion_include_set = expansion_include_set.difference(exclude_set)
 
             # Combine include query-term results with AND operator (intersect the documents)
-            include_docs = ALL_DOCUMENTS
+            include_docs = ALL_DOCUMENTS.copy()
             for w in include_set:
                 include_docs.intersection_update(INDEX[w])
 
