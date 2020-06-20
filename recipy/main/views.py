@@ -81,7 +81,11 @@ class HomePageView(ListView):
             for w in expanded_exclude_set:
                 exclude_docs = exclude_docs.union(INDEX[w])
 
+            # Put recipes in order
             ordered_include_docs = sorted(include_docs - exclude_docs, reverse=True) + sorted(expansion_docs - exclude_docs)
+
+            # Get only the recipes which will be displayed
+            ordered_include_docs = ordered_include_docs[:self.paginate_by * (int(self.request.GET.get('page', 1)) + 1)]
 
             # Filter the resultant recipes
             return super().get_queryset().filter(
