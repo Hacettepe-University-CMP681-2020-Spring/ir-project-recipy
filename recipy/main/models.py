@@ -1,6 +1,3 @@
-import re
-import string
-
 from django.urls import reverse
 from django.utils.text import slugify
 from django_better_admin_arrayfield.models.fields import ArrayField
