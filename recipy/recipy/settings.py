@@ -178,6 +178,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 #
 # Application specific variables
 LEMMATIZER = nltk.WordNetLemmatizer()
+LEMMATIZER.lemmatize('load')
 
 try:
     with open('../dataset/stopwords.txt', 'r') as f:
