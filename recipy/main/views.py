@@ -88,7 +88,7 @@ class HomePageView(ListView):
                 doc_set = doc_set.union(INDEX[word])
 
             # Filter the resultant recipes
-            return super().get_queryset().filter(pk__in=doc_set).order_by(*self.ordering)
+            return super().get_queryset().filter(pk__in=doc_set).order_by('id')
 
         elif self.request.GET.get('include') or self.request.GET.get('exclude'):
             include_set = clean_text_and_tokenize(self.request.GET.get('include'))
