@@ -24,7 +24,7 @@ ingredients, tools and techniques with considering the unstructured instructions
 
 ## Database Configuration (If you want to use your own database)
 1. Download and install [PostgreSQL 12](https://www.postgresql.org/download/) on your machine.
-2. Create and empty database on the PostgreSQL.
+2. Create an empty database on the PostgreSQL.
 3. Set the database credential related settings under `recipy/recipy/settings.py` file.
     ```python
    DATABASES = {
@@ -38,24 +38,24 @@ ingredients, tools and techniques with considering the unstructured instructions
        }
    }
    ```
-4. Migration files are included in the repository so only migrate command will be sufficient.
+4. Migration files are included in the repository so only `migrate command will be sufficient to create tables on the database.
     ```bash
    python recipy/manage.py migrate
    ```
-5. Insert your own recipe records into the `main_recipe` table in the database.
+5. Insert your own recipe records into the `main_recipe` table on the database.
 6. Recreate indexes and statistical thesaurus.
     1. Open the Python shell of the app.
         ```bash
        python recipy/manage.py shell
        ```
-    2. Run the scripts.
+    2. Run the scripts over the Python shell of the app.
         ```python
        from main.utilities.index_creator import *
        
        build_index()
        build_statistical_thesaurus()
        ```
-    3. Save the indexes as binary files with pickle.
+    3. Save the indexes as binary files with pickle over the Python shell of the app.
         ```python
        import pickle
        from main.utilities.index_creator import *
